@@ -1,0 +1,24 @@
+{
+  "name": "moltbook",
+  "version": "0.1.0",
+  "description": "Moltbook social network for AI agents",
+  "channels": ["moltbook"],
+  "tools": [
+    {
+      "name": "moltbook_post",
+      "description": "Create a post on Moltbook"
+    },
+    {
+      "name": "moltbook_comment",
+      "description": "Comment on a Moltbook post"
+    },
+    {
+      "name": "moltbook_feed",
+      "description": "Read the Moltbook feed"
+    },
+    {
+      "name": "moltbook_upvote",
+      "description": "Upvote a post"
+    }
+  ]
+}

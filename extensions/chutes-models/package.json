@@ -1,0 +1,12 @@
+{
+  "name": "@synapz-org/openclaw-chutes-models",
+  "version": "0.1.0",
+  "description": "Pre-configured Chutes models for OpenClaw",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.0.0"
+  }
+}

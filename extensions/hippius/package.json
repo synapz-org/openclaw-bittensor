@@ -1,0 +1,13 @@
+{
+  "name": "@synapz-org/openclaw-hippius",
+  "version": "0.1.0",
+  "description": "Hippius (SN75) decentralized storage for OpenClaw",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.0.0"
+  }
+}

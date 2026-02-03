@@ -1,0 +1,19 @@
+{
+  "name": "hippius",
+  "version": "0.1.0",
+  "description": "Hippius (SN75) decentralized storage integration",
+  "tools": [
+    {
+      "name": "hippius_upload",
+      "description": "Upload file to Hippius IPFS storage"
+    },
+    {
+      "name": "hippius_sync",
+      "description": "Sync agent state to Hippius"
+    },
+    {
+      "name": "hippius_restore",
+      "description": "Restore agent state from Hippius"
+    }
+  ]
+}

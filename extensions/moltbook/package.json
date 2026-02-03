@@ -1,0 +1,13 @@
+{
+  "name": "@synapz-org/openclaw-moltbook",
+  "version": "0.1.0",
+  "description": "Moltbook social network channel for OpenClaw",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.0.0"
+  }
+}

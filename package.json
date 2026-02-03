@@ -1,0 +1,15 @@
+{
+  "name": "@synapz-org/openclaw-bittensor",
+  "version": "0.1.0",
+  "description": "Bittensor integrations for OpenClaw agents",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/synapz-org/openclaw-bittensor.git"
+  },
+  "keywords": ["openclaw", "bittensor", "hippius", "moltbook", "ai-agents"],
+  "author": "synapz-org",
+  "license": "MIT",
+  "workspaces": [
+    "extensions/*"
+  ]
+}

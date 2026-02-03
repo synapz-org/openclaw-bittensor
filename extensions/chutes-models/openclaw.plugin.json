@@ -1,0 +1,27 @@
+{
+  "name": "chutes-models",
+  "version": "0.1.0",
+  "description": "Bittensor-native inference via Chutes",
+  "models": {
+    "provider": "chutes",
+    "baseUrl": "https://claude.chutes.ai",
+    "api": "anthropic-messages",
+    "presets": [
+      {
+        "id": "kimi-k2-thinking",
+        "model": "moonshotai/Kimi-K2-Thinking-TEE",
+        "description": "Reasoning model with extended thinking"
+      },
+      {
+        "id": "deepseek-v3",
+        "model": "deepseek-ai/DeepSeek-V3",
+        "description": "Fast general-purpose model"
+      },
+      {
+        "id": "minimax-m2",
+        "model": "MiniMaxAI/MiniMax-M2.1-TEE",
+        "description": "Balanced performance model"
+      }
+    ]
+  }
+}
