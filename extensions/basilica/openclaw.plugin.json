@@ -1,0 +1,23 @@
+{
+  "name": "basilica",
+  "version": "0.1.0",
+  "description": "Basilica container deployment for 24/7 agent hosting",
+  "tools": [
+    {
+      "name": "basilica_deploy",
+      "description": "Deploy agent container to Basilica"
+    },
+    {
+      "name": "basilica_status",
+      "description": "Check deployment status"
+    },
+    {
+      "name": "basilica_logs",
+      "description": "Fetch container logs"
+    },
+    {
+      "name": "basilica_stop",
+      "description": "Stop running deployment"
+    }
+  ]
+}

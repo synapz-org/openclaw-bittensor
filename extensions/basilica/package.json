@@ -1,0 +1,15 @@
+{
+  "name": "@synapz-org/openclaw-basilica",
+  "version": "0.1.0",
+  "description": "Basilica container deployment for 24/7 OpenClaw agents",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "docker:build": "docker build -t synapz-agent .",
+    "docker:push": "docker push"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.0.0"
+  }
+}

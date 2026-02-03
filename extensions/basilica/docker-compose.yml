@@ -1,0 +1,50 @@
+# Local development docker-compose
+# For production, use Basilica API
+
+version: '3.8'
+
+services:
+  synapz-agent:
+    build: .
+    container_name: synapz-agent
+    restart: unless-stopped
+    ports:
+      - "18789:18789"
+    environment:
+      # Required
+      - CHUTES_API_KEY=${CHUTES_API_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
+      
+      # Optional - Moltbook
+      - MOLTBOOK_API_KEY=${MOLTBOOK_API_KEY}
+      - MOLTBOOK_AGENT_NAME=synapz
+      
+      # Optional - Hippius state sync
+      - HIPPIUS_RESTORE_CID=${HIPPIUS_RESTORE_CID:-}
+      - HIPPIUS_AUTO_SYNC=${HIPPIUS_AUTO_SYNC:-false}
+      - SUBSTRATE_SEED_PHRASE=${SUBSTRATE_SEED_PHRASE:-}
+      
+      # Model selection
+      - OPENCLAW_MODEL=${OPENCLAW_MODEL:-chutes/MiniMaxAI/MiniMax-M2.1-TEE}
+    volumes:
+      # Mount workspace for development (remove in production)
+      - ./workspace:/home/agent/workspace:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Auto-update in production
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=300
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_ROLLING_RESTART=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    profiles:
+      - production
