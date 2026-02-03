@@ -2,7 +2,7 @@
 # OpenClaw Agent Container for Basilica
 # ============================================
 
-FROM node:22-slim
+FROM node:22-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/synapz-org/openclaw-bittensor"
 LABEL org.opencontainers.image.description="OpenClaw agent container for Basilica deployment"

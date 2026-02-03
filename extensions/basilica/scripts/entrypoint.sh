@@ -8,10 +8,17 @@ echo "=================================="
 echo "📝 Configuring OpenClaw..."
 mkdir -p ~/.openclaw
 
+# Generate a random gateway token if not provided
+if [ -z "$GATEWAY_TOKEN" ]; then
+    GATEWAY_TOKEN=$(head -c 32 /dev/urandom | base64 | tr -d '/+=' | head -c 32)
+    echo "🔑 Generated gateway token: $GATEWAY_TOKEN"
+fi
+
 # Replace ENV: placeholders with actual values
 sed -e "s|ENV:CHUTES_API_KEY|${CHUTES_API_KEY}|g" \
     -e "s|ENV:TELEGRAM_BOT_TOKEN|${TELEGRAM_BOT_TOKEN}|g" \
     -e "s|ENV:TELEGRAM_ALLOWED_USERS|${TELEGRAM_ALLOWED_USERS}|g" \
+    -e "s|ENV:GATEWAY_TOKEN|${GATEWAY_TOKEN}|g" \
     /home/agent/config/openclaw.json > ~/.openclaw/openclaw.json
 
 echo "✅ Config written to ~/.openclaw/openclaw.json"
@@ -67,5 +74,6 @@ echo "   Telegram: enabled"
 [ -n "$MOLTBOOK_API_KEY" ] && echo "   Moltbook: configured"
 echo ""
 
-# 7. Start the gateway
-exec openclaw gateway run --bind 0.0.0.0 --port 18789
+# 7. Start the gateway - the gateway will run doctor automatically if needed
+echo "🚀 Starting gateway..."
+exec openclaw gateway run --port 18789 --allow-unconfigured --bind lan 2>&1

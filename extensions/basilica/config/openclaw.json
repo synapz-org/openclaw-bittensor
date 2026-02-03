@@ -1,6 +1,11 @@
 {
   "gateway": {
-    "mode": "local"
+    "mode": "local",
+    "bind": "lan",
+    "auth": {
+      "mode": "token",
+      "token": "ENV:GATEWAY_TOKEN"
+    }
   },
   "models": {
     "providers": {
