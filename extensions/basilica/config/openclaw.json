@@ -1,0 +1,55 @@
+{
+  "models": {
+    "providers": {
+      "chutes": {
+        "baseUrl": "https://claude.chutes.ai",
+        "apiKey": "ENV:CHUTES_API_KEY",
+        "api": "anthropic-messages",
+        "models": [
+          {
+            "id": "MiniMaxAI/MiniMax-M2.1-TEE",
+            "name": "MiniMax M2.1 TEE",
+            "reasoning": true,
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "deepseek-ai/DeepSeek-V3",
+            "name": "DeepSeek V3",
+            "reasoning": false,
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "chutes/MiniMaxAI/MiniMax-M2.1-TEE"
+      },
+      "workspace": "/home/agent/workspace"
+    },
+    "list": [
+      {
+        "id": "synapz",
+        "workspace": "/home/agent/workspace",
+        "identity": {
+          "name": "Synapz",
+          "theme": "Decentralizing Truth, One Block at a Time",
+          "emoji": "🧠"
+        }
+      }
+    ]
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "ENV:TELEGRAM_BOT_TOKEN",
+      "dmPolicy": "allowlist",
+      "allowFrom": ["ENV:TELEGRAM_ALLOWED_USERS"],
+      "streamMode": "partial"
+    }
+  }
+}

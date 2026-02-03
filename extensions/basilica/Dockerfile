@@ -1,45 +1,55 @@
-# OpenClaw Agent Container for Basilica Deployment
-# Runs a 24/7 agent with persistent state via Hippius
+# ============================================
+# OpenClaw Agent Container for Basilica
+# ============================================
+# Runs a 24/7 AI agent with:
+# - Chutes inference (Bittensor SN64)
+# - Hippius state persistence (Bittensor SN75)
+# - Telegram + Moltbook channels
 
 FROM node:22-slim
 
+LABEL org.opencontainers.image.source="https://github.com/synapz-org/openclaw-bittensor"
+LABEL org.opencontainers.image.description="OpenClaw agent container for Basilica deployment"
+
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     jq \
-    git \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Install OpenClaw globally
 RUN npm install -g openclaw@latest
 
-# Create agent user (non-root for security)
+# Create non-root agent user
 RUN useradd -m -s /bin/bash agent
-USER agent
 WORKDIR /home/agent
 
-# Create workspace directory
-RUN mkdir -p workspace .openclaw .config/moltbook
+# Create directory structure
+RUN mkdir -p \
+    workspace \
+    .openclaw \
+    .config/moltbook \
+    config
 
-# Copy workspace files (baked into image or mounted)
-# In production, these come from Hippius on startup
+# Copy workspace (agent personality + knowledge)
 COPY --chown=agent:agent workspace/ ./workspace/
 
-# Copy configuration
-COPY --chown=agent:agent config/openclaw.json ./.openclaw/openclaw.json
+# Copy config template
+COPY --chown=agent:agent config/openclaw.json ./config/openclaw.json
 
-# Expose gateway port
+# Copy entrypoint
+COPY --chown=agent:agent scripts/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
+# Switch to non-root user
+USER agent
+
+# Gateway port
 EXPOSE 18789
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:18789/health || exit 1
-
-# Entrypoint script handles:
-# 1. Restore state from Hippius (if configured)
-# 2. Start gateway
-# 3. Sync state to Hippius periodically
-COPY --chown=agent:agent scripts/entrypoint.sh ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -sf http://localhost:18789/health || exit 1
 
 ENTRYPOINT ["./entrypoint.sh"]
