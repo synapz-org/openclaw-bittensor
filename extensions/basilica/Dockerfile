@@ -1,10 +1,6 @@
 # ============================================
 # OpenClaw Agent Container for Basilica
 # ============================================
-# Runs a 24/7 AI agent with:
-# - Chutes inference (Bittensor SN64)
-# - Hippius state persistence (Bittensor SN75)
-# - Telegram + Moltbook channels
 
 FROM node:22-slim
 
@@ -15,6 +11,7 @@ LABEL org.opencontainers.image.description="OpenClaw agent container for Basilic
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     jq \
+    git \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -23,32 +20,23 @@ RUN npm install -g openclaw@latest
 
 # Create non-root agent user
 RUN useradd -m -s /bin/bash agent
+
+# Switch to agent user BEFORE creating directories
+USER agent
 WORKDIR /home/agent
 
-# Create directory structure
-RUN mkdir -p \
-    workspace \
-    .openclaw \
-    .config/moltbook \
-    config
+# Create directory structure (as agent user)
+RUN mkdir -p workspace .openclaw .config/moltbook config
 
-# Copy workspace (agent personality + knowledge)
+# Copy files (still owned by agent due to --chown)
 COPY --chown=agent:agent workspace/ ./workspace/
-
-# Copy config template
 COPY --chown=agent:agent config/openclaw.json ./config/openclaw.json
-
-# Copy entrypoint
 COPY --chown=agent:agent scripts/entrypoint.sh ./entrypoint.sh
+
 RUN chmod +x ./entrypoint.sh
 
-# Switch to non-root user
-USER agent
-
-# Gateway port
 EXPOSE 18789
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
     CMD curl -sf http://localhost:18789/health || exit 1
 

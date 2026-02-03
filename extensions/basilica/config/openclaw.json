@@ -1,4 +1,7 @@
 {
+  "gateway": {
+    "mode": "local"
+  },
   "models": {
     "providers": {
       "chutes": {
@@ -10,13 +13,6 @@
             "id": "MiniMaxAI/MiniMax-M2.1-TEE",
             "name": "MiniMax M2.1 TEE",
             "reasoning": true,
-            "contextWindow": 200000,
-            "maxTokens": 8192
-          },
-          {
-            "id": "deepseek-ai/DeepSeek-V3",
-            "name": "DeepSeek V3",
-            "reasoning": false,
             "contextWindow": 200000,
             "maxTokens": 8192
           }
