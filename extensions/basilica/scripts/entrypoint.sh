@@ -74,6 +74,27 @@ echo "   Telegram: enabled"
 [ -n "$MOLTBOOK_API_KEY" ] && echo "   Moltbook: configured"
 echo ""
 
-# 7. Start the gateway - the gateway will run doctor automatically if needed
+# 7. Start the gateway in background (allows proper output capture in Docker)
 echo "🚀 Starting gateway..."
-exec openclaw gateway run --port 18789 --allow-unconfigured --bind lan 2>&1
+
+# Run gateway in background - this pattern works in Docker
+openclaw gateway run --port 18789 --allow-unconfigured --bind lan --force 2>&1 &
+GATEWAY_PID=$!
+
+# Brief wait to let gateway initialize
+sleep 3
+
+# Check if gateway is still running
+if ! kill -0 $GATEWAY_PID 2>/dev/null; then
+    echo "❌ Gateway process exited unexpectedly"
+    wait $GATEWAY_PID
+    exit $?
+fi
+
+echo "✅ Gateway process running (PID $GATEWAY_PID)"
+
+# Keep container running - forward signals to gateway
+trap "kill $GATEWAY_PID 2>/dev/null; wait $GATEWAY_PID" SIGTERM SIGINT
+
+# Wait for gateway process (this keeps the container alive)
+wait $GATEWAY_PID
