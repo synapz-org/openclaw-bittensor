@@ -52,5 +52,10 @@
       "allowFrom": ["ENV:TELEGRAM_ALLOWED_USERS"],
       "streamMode": "partial"
     }
+  },
+  "browser": {
+    "enabled": true,
+    "headless": true,
+    "noSandbox": true
   }
 }

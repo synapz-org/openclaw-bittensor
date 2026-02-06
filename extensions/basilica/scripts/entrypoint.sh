@@ -77,7 +77,7 @@ echo ""
 # 7. Start the gateway in background (allows proper output capture in Docker)
 echo "🚀 Starting gateway..."
 
-# Run gateway in background - this pattern works in Docker
+# Run gateway in background - NODE_OPTIONS with hostname fix is set in Dockerfile ENV
 openclaw gateway run --port 18789 --allow-unconfigured --bind lan --force 2>&1 &
 GATEWAY_PID=$!
 
